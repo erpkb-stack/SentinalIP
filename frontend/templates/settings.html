@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Settings · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Settings{% endblock %}
+{% block header_sub %}Your account and session{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Settings</h1>
+    <p>Account details and password. Platform configuration lives under Administration.</p>
+  </div>
+</div>
+
+<div class="grid grid--2">
+  <section class="card">
+    <div class="card__head"><h2>Your Account</h2></div>
+    <div class="card__body"><dl class="dl" id="accountPanel">
+      <div><dt>Loading</dt><dd><div class="skeleton skeleton--text"></div></dd></div>
+    </dl></div>
+  </section>
+
+  <section class="card">
+    <div class="card__head"><h2>Change Password</h2></div>
+    <div class="card__body">
+      <form id="passwordForm" novalidate style="display:grid;gap:1rem">
+        <div class="field" data-field="current_password">
+          <label for="currentPassword">Current password<span class="req">*</span></label>
+          <input class="input" type="password" id="currentPassword"
+                 autocomplete="current-password" required>
+          <div class="field__error" hidden></div>
+        </div>
+        <div class="field" data-field="new_password">
+          <label for="newPassword">New password<span class="req">*</span></label>
+          <input class="input" type="password" id="newPassword"
+                 autocomplete="new-password" required>
+          <small>At least 12 characters with upper case, lower case, a number and a symbol.</small>
+          <div class="field__error" hidden></div>
+        </div>
+        <div class="field" data-field="confirm">
+          <label for="confirmPassword">Confirm new password<span class="req">*</span></label>
+          <input class="input" type="password" id="confirmPassword"
+                 autocomplete="new-password" required>
+          <div class="field__error" hidden></div>
+        </div>
+        <button class="btn btn--primary" type="submit" id="passwordBtn">Update password</button>
+        <p class="card__hint" style="margin:0">
+          Changing your password signs out every other session immediately.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card__head"><h2>Your Permissions</h2></div>
+    <div class="card__body" id="permissionPanel"></div>
+  </section>
+
+  <section class="card">
+    <div class="card__head"><h2>Platform</h2></div>
+    <div class="card__body"><dl class="dl" id="platformPanel"></dl></div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/settings.js"></script>
+{% endblock %}

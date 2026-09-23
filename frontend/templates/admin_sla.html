@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}SLA Policies · {{ APP_NAME }}{% endblock %}
+{% block header_title %}SLA Policies{% endblock %}
+{% block header_sub %}Decision and resolution windows{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>SLA Policies</h1>
+    <p>The response window starts when a case is created and stops when a human
+       records a decision. Priority tightens it: Critical ×0.25, High ×0.5, Low ×1.5.</p>
+  </div>
+  <div class="page-head__actions">
+    <button class="btn btn--primary" id="createPolicyBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      New Policy
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2>Policies</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Policy</th><th>Scope</th><th class="num">Decision window</th>
+          <th class="num">Resolution window</th><th class="num">At-risk threshold</th>
+          <th>Priority</th><th>Default</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="policyBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_sla.js"></script>
+{% endblock %}

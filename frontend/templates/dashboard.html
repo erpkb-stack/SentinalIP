@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+{% block header_sub %}Enforcement posture at a glance{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Enforcement Dashboard</h1>
+    <p id="scopeLine">Loading scope…</p>
+  </div>
+  <div class="page-head__actions">
+    <select class="select" id="windowSelect" aria-label="Time window" style="width:auto">
+      <option value="30">Last 30 days</option>
+      <option value="90" selected>Last 90 days</option>
+      <option value="180">Last 6 months</option>
+      <option value="365">Last 12 months</option>
+    </select>
+    <a class="btn btn--primary" href="/cases/new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      New Case
+    </a>
+  </div>
+</div>
+
+<section class="grid grid--stats" id="statCards" aria-label="Key metrics">
+  <div class="card stat"><div class="skeleton skeleton--card"></div></div>
+  <div class="card stat"><div class="skeleton skeleton--card"></div></div>
+  <div class="card stat"><div class="skeleton skeleton--card"></div></div>
+  <div class="card stat"><div class="skeleton skeleton--card"></div></div>
+</section>
+
+<section class="grid grid--2" style="margin-top:1rem">
+  <div class="card">
+    <div class="card__head"><h2>Cases Over Time</h2>
+      <span class="card__hint card__actions">Weekly new cases</span></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartOverTime"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h2>Cases by Status</h2></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartStatus"></canvas></div></div>
+  </div>
+</section>
+
+<section class="grid grid--3" style="margin-top:1rem">
+  <div class="card">
+    <div class="card__head"><h2>AI Confidence Distribution</h2></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartConfidence"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h2>Cases by Marketplace</h2></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartMarketplace"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h2>Cases by Infringement Type</h2></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartInfringement"></canvas></div></div>
+  </div>
+</section>
+
+<section class="grid grid--2" style="margin-top:1rem">
+  <div class="card">
+    <div class="card__head"><h2>SLA Performance</h2></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartSla"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h2>Enforcement Success Rate</h2>
+      <span class="card__hint card__actions">% resolved in the brand's favour</span></div>
+    <div class="card__body"><div class="chart-box"><canvas id="chartSuccess"></canvas></div></div>
+  </div>
+</section>
+
+<section class="grid grid--2 grid--top" style="margin-top:1rem">
+  <div class="card">
+    <div class="card__head">
+      <h2>Awaiting Human Approval</h2>
+      <a class="card__actions btn btn--ghost btn--sm"
+         href="/cases?status=AWAITING_APPROVAL">View all</a>
+    </div>
+    <div class="card__body card__body--flush">
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Case</th><th>Confidence</th><th>Recommendation</th><th>SLA</th></tr></thead>
+          <tbody id="attentionBody">
+            <tr><td colspan="4"><div class="skeleton skeleton--row"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h2>Recent Cases</h2>
+      <a class="card__actions btn btn--ghost btn--sm" href="/cases">View all</a></div>
+    <div class="card__body card__body--flush">
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Case</th><th>Status</th><th>Confidence</th><th>Created</th></tr></thead>
+          <tbody id="recentBody">
+            <tr><td colspan="4"><div class="skeleton skeleton--row"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/vendor/chart.umd.js"></script>
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

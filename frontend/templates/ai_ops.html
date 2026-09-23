@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}AI Operations · {{ APP_NAME }}{% endblock %}
+{% block header_title %}AI Operations{% endblock %}
+{% block header_sub %}Agent fleet health and throughput{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>AI Operations</h1>
+    <p id="providerLine">Loading provider…</p>
+  </div>
+  <div class="page-head__actions">
+    <button class="btn" id="refreshOps">Refresh</button>
+  </div>
+</div>
+
+<div class="banner banner--accent" style="margin-bottom:1rem">
+  <span aria-hidden="true">🔒</span>
+  <span><strong>The gate sits between Enforcement Strategist and any filing.</strong>
+    Filing &amp; Tracking prepares drafts only. No enforcement action is submitted
+    without a recorded human approval, at any autonomy tier.</span>
+</div>
+
+<section class="grid grid--2" id="agentCards" aria-label="Agents">
+  <div class="card"><div class="card__body"><div class="skeleton skeleton--card"></div></div></div>
+  <div class="card"><div class="card__body"><div class="skeleton skeleton--card"></div></div></div>
+  <div class="card"><div class="card__body"><div class="skeleton skeleton--card"></div></div></div>
+  <div class="card"><div class="card__body"><div class="skeleton skeleton--card"></div></div></div>
+</section>
+
+<section class="card" style="margin-top:1rem">
+  <div class="card__head"><h2>Recent Agent Runs</h2>
+    <span class="card__hint card__actions" id="runsHint"></span></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Agent</th><th>Case</th><th>Status</th><th>Confidence</th>
+          <th>Duration</th><th>Started</th><th>Summary</th>
+        </tr></thead>
+        <tbody id="runsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ai_ops.js"></script>
+{% endblock %}

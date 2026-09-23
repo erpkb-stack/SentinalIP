@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Case · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Case Investigation{% endblock %}
+{% block header_sub %}Evidence, AI analysis and the human approval gate{% endblock %}
+
+{% block content %}
+<div data-case-id="{{ case_id }}" id="caseRoot">
+
+  <div class="page-head">
+    <div class="page-head__text">
+      <div class="card__hint"><a href="/cases">← Back to cases</a></div>
+      <h1 id="caseNumber"><span class="skeleton skeleton--text" style="width:180px;display:inline-block"></span></h1>
+      <p id="caseTitle"></p>
+    </div>
+    <div class="page-head__actions" id="caseActions"></div>
+  </div>
+
+  <section class="grid grid--3" style="margin-bottom:1rem">
+    <div class="card confidence-hero" id="confidenceHero">
+      <div class="skeleton skeleton--card" style="width:100%"></div>
+    </div>
+    <div class="card stat" id="statusCard"><div class="skeleton skeleton--card"></div></div>
+    <div class="card stat" id="slaCard"><div class="skeleton skeleton--card"></div></div>
+  </section>
+
+  <div id="gateSlot" style="margin-bottom:1rem"></div>
+
+  <div class="grid grid--detail">
+    <div style="display:grid;gap:1rem;min-width:0">
+
+      <section class="card">
+        <div class="card__head"><h2>AI Agent Pipeline</h2>
+          <span class="card__hint card__actions" id="pipelineHint"></span></div>
+        <div class="card__body">
+          <div class="pipeline" id="pipeline"></div>
+          <p class="card__hint" style="margin:.75rem 0 0">
+            Select an agent to see its full output, findings and evidence references.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="decisionCard" hidden>
+        <div class="card__head"><h2>AI Decision Panel</h2>
+          <span class="card__hint card__actions" id="decisionProvider"></span></div>
+        <div class="card__body" id="decisionBody"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2>Evidence</h2>
+          <div class="card__actions">
+            <button class="btn btn--sm" id="addEvidenceBtn">Add evidence</button>
+          </div>
+        </div>
+        <div class="card__body card__body--flush" id="evidencePanel"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h2>Case Activity</h2></div>
+        <div class="card__body" id="activityPanel">
+          <div class="skeleton skeleton--text"></div>
+          <div class="skeleton skeleton--text"></div>
+        </div>
+      </section>
+    </div>
+
+    <div style="display:grid;gap:1rem;min-width:0">
+      <section class="card">
+        <div class="card__head"><h2>Overview</h2></div>
+        <div class="card__body"><dl class="dl" id="overview"></dl></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h2>Enforcement Status</h2></div>
+        <div class="card__body">
+          <ul class="timeline" id="enforcementTimeline"></ul>
+        </div>
+        <div class="card__foot" id="enforcementFoot" hidden></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h2>Approval History</h2></div>
+        <div class="card__body" id="approvalHistory"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h3>Autonomy</h3></div>
+        <div class="card__body" id="autonomyPanel"></div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/case_detail.js"></script>
+{% endblock %}

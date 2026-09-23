@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Enforcement · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Enforcement{% endblock %}
+{% block header_sub %}Filings, approvals and marketplace outcomes{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Enforcement Actions</h1>
+    <p>Draft → Human Approved → Submitted → Marketplace Review → Resolved.
+       Nothing moves past "Human Approved" without a recorded decision.</p>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="enfFilters">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search" placeholder="Reference or submission ID">
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select class="select" id="status" name="status"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="action_type">Action</label>
+        <select class="select" id="action_type" name="action_type"><option value="">Any</option></select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2 id="enfCount">Enforcement actions</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Reference</th><th>Case</th><th>Action</th><th>Status</th>
+          <th>Approval</th><th>Confidence</th><th>Submitted</th>
+          <th>Response SLA</th><th>Result</th>
+        </tr></thead>
+        <tbody id="enfBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="enfPager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/enforcement.js"></script>
+{% endblock %}

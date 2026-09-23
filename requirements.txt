@@ -1,0 +1,33 @@
+# ---- Sentinel IP AI :: runtime dependencies ----
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+starlette==0.41.3
+
+# ORM / DB
+SQLAlchemy==2.0.36
+alembic==1.14.0
+PyMySQL==1.1.1
+cryptography==44.0.0          # required by PyMySQL for caching_sha2_password (MySQL 8 default)
+
+# Config / validation
+pydantic==2.10.4
+pydantic-settings==2.7.0
+email-validator==2.2.0
+python-dotenv==1.0.1
+
+# Auth / security
+PyJWT==2.10.1
+bcrypt==4.2.1
+argon2-cffi==23.1.0
+
+# Web / templates / uploads
+Jinja2==3.1.5
+python-multipart==0.0.20
+itsdangerous==2.2.0
+
+# File type validation
+filetype==1.2.0
+
+# ---- test / dev ----
+pytest==8.3.4
+httpx==0.28.1

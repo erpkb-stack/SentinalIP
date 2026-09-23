@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Vendor Management · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Vendor Management{% endblock %}
+{% block header_sub %}Tenants, SLA policy and autonomy tier{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Vendor Management</h1>
+    <p>Each vendor is a tenant. Every case, product and evidence item belongs to
+       exactly one of them.</p>
+  </div>
+  <div class="page-head__actions">
+    <button class="btn btn--primary" id="createVendorBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Create Vendor
+    </button>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="vendorFilters">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search" placeholder="Name, legal name or contact">
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select class="select" id="status" name="status">
+          <option value="">Any</option>
+          <option value="ACTIVE">Active</option>
+          <option value="SUSPENDED">Suspended</option>
+          <option value="INACTIVE">Inactive</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2 id="vendorCount">Vendors</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Vendor</th><th>Contact</th><th class="num">Users</th>
+          <th class="num">Open Cases</th><th>Autonomy</th><th>SLA Policy</th>
+          <th>Status</th><th>Created</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="vendorsBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="vendorsPager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_vendors.js"></script>
+{% endblock %}

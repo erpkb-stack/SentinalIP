@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{% if scope == 'mine' %}My Cases{% else %}Cases{% endif %} · {{ APP_NAME }}{% endblock %}
+{% block header_title %}{% if scope == 'mine' %}My Cases{% else %}Cases{% endif %}{% endblock %}
+{% block header_sub %}Investigations and enforcement records{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>{% if scope == 'mine' %}My Cases{% else %}All Cases{% endif %}</h1>
+    <p>
+      {% if user and user.vendor %}
+        Showing cases for {{ user.vendor.name }} only.
+      {% else %}
+        Showing cases across every vendor.
+      {% endif %}
+    </p>
+  </div>
+  <div class="page-head__actions">
+    <a class="btn btn--primary" href="/cases/new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      New Case
+    </a>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="filterForm" data-scope="{{ scope }}">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search"
+               placeholder="Case ID, product, seller, marketplace or URL">
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select class="select" id="status" name="status"><option value="">Any</option></select>
+      </div>
+      <div class="field" id="vendorField" hidden>
+        <label for="vendor_id">Vendor</label>
+        <select class="select" id="vendor_id" name="vendor_id"><option value="">All vendors</option></select>
+      </div>
+      <div class="field">
+        <label for="marketplace_id">Marketplace</label>
+        <select class="select" id="marketplace_id" name="marketplace_id"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="infringement_type">Infringement</label>
+        <select class="select" id="infringement_type" name="infringement_type"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="risk_level">Confidence</label>
+        <select class="select" id="risk_level" name="risk_level"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="sla_state">SLA</label>
+        <select class="select" id="sla_state" name="sla_state"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="assigned_to_id">Assigned to</label>
+        <select class="select" id="assigned_to_id" name="assigned_to_id">
+          <option value="">Anyone</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="created_from">Created from</label>
+        <input class="input" type="date" id="created_from" name="created_from">
+      </div>
+      <div class="field">
+        <label for="created_to">Created to</label>
+        <input class="input" type="date" id="created_to" name="created_to">
+      </div>
+      <div class="field" style="flex:0 0 auto">
+        <label>&nbsp;</label>
+        <button class="btn" type="button" id="resetFilters">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head">
+    <h2 id="resultCount">Cases</h2>
+    <div class="card__actions card__hint" id="activeScope"></div>
+  </div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="case_number">Case ID</th>
+            <th>Vendor</th>
+            <th>Product</th>
+            <th>Marketplace</th>
+            <th>Seller</th>
+            <th>Infringement</th>
+            <th class="sortable" data-sort="confidence">AI Confidence</th>
+            <th class="sortable" data-sort="status">Status</th>
+            <th class="sortable" data-sort="sla">SLA</th>
+            <th>Assigned To</th>
+            <th class="sortable" data-sort="created_at">Created</th>
+            <th class="sortable" data-sort="updated_at">Updated</th>
+          </tr>
+        </thead>
+        <tbody id="casesBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="pager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/cases.js"></script>
+{% endblock %}

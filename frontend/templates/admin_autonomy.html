@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}AI Autonomy · {{ APP_NAME }}{% endblock %}
+{% block header_title %}AI Autonomy{% endblock %}
+{% block header_sub %}How much the agents may do without a human{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>AI Autonomy</h1>
+    <p id="autonomyIntro">Loading policy…</p>
+  </div>
+</div>
+
+<div class="banner banner--accent" style="margin-bottom:1rem">
+  <span aria-hidden="true">🔒</span>
+  <span id="autonomyStatement"></span>
+</div>
+
+<section class="grid grid--3" id="tierCards"></section>
+
+<section class="card" style="margin-top:1rem">
+  <div class="card__head"><h2>Vendor Assignments</h2>
+    <span class="card__hint card__actions">New vendors default to Tier 1</span></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Vendor</th><th>Current tier</th><th>Change to</th><th></th></tr></thead>
+        <tbody id="vendorTierBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="card" style="margin-top:1rem">
+  <div class="card__head"><h2>Action Classes</h2></div>
+  <div class="card__body">
+    <div class="grid grid--2">
+      <div>
+        <h3 style="font-size:.9rem;margin-bottom:.5rem">Always requires human approval</h3>
+        <ul class="reason-list reason-list--risk" id="legalActions"></ul>
+      </div>
+      <div>
+        <h3 style="font-size:.9rem;margin-bottom:.5rem">Automatable at Tier 3 (non-legal)</h3>
+        <ul class="reason-list" id="autoActions"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_autonomy.js"></script>
+{% endblock %}

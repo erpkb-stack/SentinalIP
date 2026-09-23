@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Evidence · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Evidence{% endblock %}
+{% block header_sub %}Every item collected, with its chain of custody{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Evidence Library</h1>
+    <p>Evidence is append-only. Items can be archived with a reason, never silently deleted.</p>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="evidenceFilters">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search" placeholder="Reference, title or description">
+      </div>
+      <div class="field">
+        <label for="category">Category</label>
+        <select class="select" id="category" name="category"><option value="">All</option></select>
+      </div>
+      <div class="field">
+        <label for="relevance">Review state</label>
+        <select class="select" id="relevance" name="relevance"><option value="">Any</option></select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2 id="evidenceCount">Evidence</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Evidence ID</th><th>Category</th><th>Title</th><th>Type</th>
+          <th>Collected by</th><th>Strength</th><th>Review</th><th>Checksum</th>
+          <th>Collected</th><th>Case</th>
+        </tr></thead>
+        <tbody id="evidenceBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="evidencePager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/evidence.js"></script>
+{% endblock %}

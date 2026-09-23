@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}User Management · {{ APP_NAME }}{% endblock %}
+{% block header_title %}User Management{% endblock %}
+{% block header_sub %}Accounts, roles and vendor assignment{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>User Management</h1>
+    <p>A Vendor User belongs to exactly one vendor. A Super Admin belongs to none.</p>
+  </div>
+  <div class="page-head__actions">
+    <button class="btn btn--primary" id="createUserBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Create User
+    </button>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="userFilters">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search" placeholder="Name or email">
+      </div>
+      <div class="field">
+        <label for="role_code">Role</label>
+        <select class="select" id="role_code" name="role_code"><option value="">Any</option></select>
+      </div>
+      <div class="field" id="userVendorFilter" hidden>
+        <label for="vendor_id">Vendor</label>
+        <select class="select" id="vendor_id" name="vendor_id"><option value="">All</option></select>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select class="select" id="status" name="status">
+          <option value="">Any</option>
+          <option value="ACTIVE">Active</option>
+          <option value="DISABLED">Disabled</option>
+          <option value="PENDING">Pending</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2 id="userCount">Users</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Name</th><th>Email</th><th>Role</th><th>Vendor</th>
+          <th>Status</th><th>Last Login</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="usersPager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_users.js"></script>
+{% endblock %}

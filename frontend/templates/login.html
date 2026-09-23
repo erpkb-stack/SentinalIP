@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Sign in · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23BF5700'/><text x='16' y='22' font-family='Helvetica,Arial' font-size='16' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+</head>
+<body>
+<div class="auth">
+
+  <aside class="auth__aside">
+    <div class="auth__brand">
+      <div class="sidebar__mark" aria-hidden="true">SIP</div>
+      <div>
+        <div class="sidebar__name" style="font-size:1.05rem">{{ APP_NAME }}</div>
+        <div class="sidebar__tag">IP Enforcement Platform</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="auth__headline">Protect a global catalog with a team you already have.</div>
+      <div class="auth__tagline">{{ APP_TAGLINE }}</div>
+      <ul class="auth__points">
+        <li><span class="marker">01</span><span><strong>Scout</strong> finds and captures suspect listings across marketplaces.</span></li>
+        <li><span class="marker">02</span><span><strong>Verification</strong> weighs the evidence and scores calibrated confidence.</span></li>
+        <li><span class="marker">03</span><span><strong>Enforcement Strategist</strong> recommends one action and explains why.</span></li>
+        <li><span class="marker">04</span><span><strong>Filing &amp; Tracking</strong> drafts the notice — and stops for a human.</span></li>
+      </ul>
+    </div>
+
+    <div class="auth__foot">
+      Tenant isolation and human approval are security boundaries, not UI features.
+      No enforcement action is filed without a named human approver.
+    </div>
+  </aside>
+
+  <main class="auth__main">
+    <div class="auth__panel">
+      <h1>Sign in</h1>
+      <p>Use your Sentinel IP AI account to continue.</p>
+
+      {% if reason %}
+      <div class="banner banner--warning" style="margin-bottom:1rem">
+        <span aria-hidden="true">⚠</span>
+        <span>
+          {% if reason in ('session_expired', 'not_authenticated') %}
+            Your session ended. Please sign in again.
+          {% else %}
+            Please sign in to continue.
+          {% endif %}
+        </span>
+      </div>
+      {% endif %}
+
+      <form class="auth__form" id="loginForm" novalidate data-next="{{ next_url or '/dashboard' }}">
+        <div class="field" data-field="email">
+          <label for="email">Email<span class="req">*</span></label>
+          <input class="input" type="email" id="email" name="email" autocomplete="username"
+                 required autofocus placeholder="you@company.com">
+          <div class="field__error" hidden></div>
+        </div>
+
+        <div class="field" data-field="password">
+          <label for="password">Password<span class="req">*</span></label>
+          <input class="input" type="password" id="password" name="password"
+                 autocomplete="current-password" required placeholder="••••••••••••">
+          <div class="field__error" hidden></div>
+        </div>
+
+        <div class="auth__row">
+          <label class="checkbox">
+            <input type="checkbox" id="remember" name="remember_me">
+            Remember me
+          </label>
+        </div>
+
+        <div class="banner banner--danger" id="loginError" hidden>
+          <span aria-hidden="true">✕</span><span id="loginErrorText"></span>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit" id="loginBtn">Sign in</button>
+      </form>
+
+      {% if APP_ENV != 'production' %}
+      <div class="auth__demo">
+        <h3>Development accounts <span class="demo-tag">DEMO</span></h3>
+        <div>Click to fill. Password is documented in the README.</div>
+        <div style="display:grid;gap:.125rem;margin-top:.375rem">
+          <button type="button" data-demo="admin@sentinel.local">admin@sentinel.local — Super Admin</button>
+          <button type="button" data-demo="admin@acme.local">admin@acme.local — Admin (Acme only)</button>
+          <button type="button" data-demo="user@acme.local">user@acme.local — Vendor User (Acme)</button>
+          <button type="button" data-demo="user@global.local">user@global.local — Vendor User (Global Retail)</button>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </main>
+</div>
+
+<div class="toasts" role="status" aria-live="polite"></div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/ui.js"></script>
+<script src="/static/js/login.js"></script>
+</body>
+</html>

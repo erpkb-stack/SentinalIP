@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Audit Trail · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Audit Trail{% endblock %}
+{% block header_sub %}Append-only record of every consequential action{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Audit Trail</h1>
+    <p>Records are written once and never updated or deleted. There is no API that
+       modifies this table.</p>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card__body">
+    <form class="filters" id="auditFilters">
+      <div class="field field--search">
+        <label for="q">Search</label>
+        <input class="input" id="q" name="q" type="search"
+               placeholder="User, object, detail or correlation ID">
+      </div>
+      <div class="field">
+        <label for="action">Action</label>
+        <select class="select" id="action" name="action"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="object_type">Object</label>
+        <select class="select" id="object_type" name="object_type">
+          <option value="">Any</option>
+          <option value="case">Case</option>
+          <option value="user">User</option>
+          <option value="vendor">Vendor</option>
+          <option value="evidence">Evidence</option>
+          <option value="enforcement_action">Enforcement action</option>
+          <option value="ai_agent_run">AI agent run</option>
+          <option value="sla_policy">SLA policy</option>
+        </select>
+      </div>
+      <div class="field" id="auditVendorField" hidden>
+        <label for="vendor_id">Vendor</label>
+        <select class="select" id="vendor_id" name="vendor_id"><option value="">All</option></select>
+      </div>
+      <div class="field">
+        <label for="date_from">From</label>
+        <input class="input" type="date" id="date_from" name="date_from">
+      </div>
+      <div class="field">
+        <label for="date_to">To</label>
+        <input class="input" type="date" id="date_to" name="date_to">
+      </div>
+      <div class="field">
+        <label for="success">Outcome</label>
+        <select class="select" id="success" name="success">
+          <option value="">Any</option>
+          <option value="true">Succeeded</option>
+          <option value="false">Denied / failed</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2 id="auditCount">Audit records</h2></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>Timestamp</th><th>User</th><th>Role</th><th>Vendor</th>
+          <th>Action</th><th>Object</th><th>Detail</th><th>IP</th><th>Correlation</th>
+        </tr></thead>
+        <tbody id="auditBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card__foot" id="auditPager"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/audit.js"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Roles &amp; Permissions · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Roles &amp; Permissions{% endblock %}
+{% block header_sub %}What each role can do, enforced server-side{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>Roles &amp; Permissions</h1>
+    <p>These grants are checked on every API call, not only in the interface.
+       Hiding a menu is not a permission.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h2>Permission Matrix</h2>
+    <span class="card__hint card__actions">✓ granted · — not granted</span></div>
+  <div class="card__body card__body--flush">
+    <div class="table-wrap">
+      <table class="table" id="matrix">
+        <thead><tr><th>Permission</th></tr></thead>
+        <tbody><tr><td><div class="skeleton skeleton--row"></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:1rem">
+  <div class="card__head"><h2>Role Definitions</h2></div>
+  <div class="card__body"><div class="grid grid--3" id="roleCards"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_roles.js"></script>
+{% endblock %}

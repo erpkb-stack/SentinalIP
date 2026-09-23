@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}New Case · {{ APP_NAME }}{% endblock %}
+{% block header_title %}Create Case{% endblock %}
+{% block header_sub %}Open an investigation and run the AI pipeline{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <h1>New Case</h1>
+    <p>Capture the product you protect and the listing you suspect. The four agents
+       run in sequence and stop at the human approval gate.</p>
+  </div>
+</div>
+
+<div class="banner banner--warning" id="bootstrapWarning" hidden style="margin-bottom:1rem">
+  <span aria-hidden="true">⚠</span><span data-warning-text></span>
+</div>
+
+<form id="caseForm" novalidate>
+  <div class="grid grid--detail">
+    <div style="display:grid;gap:1rem">
+
+      <section class="card">
+        <div class="card__head"><h2>Product Information</h2></div>
+        <div class="card__body">
+          <div class="form-grid">
+            <div class="field field--full" data-field="product_name">
+              <label for="product_name">Product Name<span class="req">*</span></label>
+              <input class="input" id="product_name" name="product_name" required
+                     placeholder="e.g. Acme AirPulse Pro Earbuds">
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field" data-field="product_sku">
+              <label for="product_sku">Product ID / SKU</label>
+              <input class="input" id="product_sku" name="product_sku" placeholder="ACM-APP-201">
+              <small>Reused if this SKU already exists for your vendor.</small>
+            </div>
+            <div class="field" data-field="brand">
+              <label for="brand">Brand</label>
+              <input class="input" id="brand" name="brand" placeholder="Acme">
+            </div>
+            <div class="field" data-field="trademark">
+              <label for="trademark">Trademark</label>
+              <input class="input" id="trademark" name="trademark" placeholder="ACME AIRPULSE">
+            </div>
+            <div class="field" data-field="msrp">
+              <label for="msrp">Expected price (MSRP)</label>
+              <input class="input" id="msrp" name="msrp" type="number" step="0.01" min="0"
+                     placeholder="179.00">
+              <small>Used to score pricing anomalies.</small>
+            </div>
+            <div class="field field--full" data-field="product_url">
+              <label for="product_url">Product URL</label>
+              <input class="input" id="product_url" name="product_url" type="url"
+                     placeholder="https://yourbrand.com/products/…">
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field field--full" data-field="product_description">
+              <label for="product_description">Product Description</label>
+              <textarea class="textarea" id="product_description" name="product_description"
+                        placeholder="Distinctive features, packaging, authorized channels…"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h2>Suspected Listing</h2></div>
+        <div class="card__body">
+          <div class="form-grid">
+            <div class="field" data-field="marketplace_id">
+              <label for="marketplace_id">Marketplace<span class="req">*</span></label>
+              <select class="select" id="marketplace_id" name="marketplace_id">
+                <option value="">Select a marketplace…</option>
+                {% for m in marketplaces %}
+                <option value="{{ m.id }}">{{ m.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field" data-field="marketplace_name">
+              <label for="marketplace_name">Or enter a new marketplace</label>
+              <input class="input" id="marketplace_name" name="marketplace_name"
+                     placeholder="Only if it is not in the list">
+            </div>
+            <div class="field field--full" data-field="listing_url">
+              <label for="listing_url">Listing URL<span class="req">*</span></label>
+              <input class="input" id="listing_url" name="listing_url" type="url" required
+                     placeholder="https://marketplace.com/itm/1234567890">
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field field--full" data-field="listing_title">
+              <label for="listing_title">Listing Title</label>
+              <input class="input" id="listing_title" name="listing_title"
+                     placeholder="As it appears on the marketplace">
+            </div>
+            <div class="field" data-field="seller_name">
+              <label for="seller_name">Seller Name</label>
+              <input class="input" id="seller_name" name="seller_name">
+            </div>
+            <div class="field" data-field="seller_url">
+              <label for="seller_url">Seller URL</label>
+              <input class="input" id="seller_url" name="seller_url" type="url">
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field" data-field="seller_country">
+              <label for="seller_country">Seller Country</label>
+              <input class="input" id="seller_country" name="seller_country" placeholder="CN">
+            </div>
+            <div class="field" data-field="listing_price">
+              <label for="listing_price">Listing Price</label>
+              <input class="input" id="listing_price" name="listing_price" type="number"
+                     step="0.01" min="0">
+            </div>
+            <div class="field" data-field="currency">
+              <label for="currency">Currency</label>
+              <select class="select" id="currency" name="currency">
+                {% for c in currencies %}
+                <option value="{{ c }}"{% if c == 'USD' %} selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field" data-field="listing_date">
+              <label for="listing_date">Listing Date</label>
+              <input class="input" id="listing_date" name="listing_date" type="date">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h2>Evidence</h2>
+          <span class="card__hint card__actions" id="uploadHint"></span></div>
+        <div class="card__body">
+          <p class="card__hint">
+            Optional. Files are attached after the case is created, and the AI adds
+            everything it collects itself. Evidence is never deleted — only archived
+            with a reason.
+          </p>
+          <div class="dropzone" id="dropzone">
+            <div><strong>Drop files here</strong> or
+              <button type="button" class="btn btn--sm" id="browseBtn">browse</button>
+            </div>
+            <small id="acceptHint"></small>
+          </div>
+          <input type="file" id="fileInput" multiple hidden>
+          <ul class="file-list" id="fileList"></ul>
+
+          <div class="form-grid" style="margin-top:1rem">
+            <div class="field">
+              <label for="evidence_url">Add a URL as evidence</label>
+              <input class="input" id="evidence_url" type="url"
+                     placeholder="https://archive.example.com/snapshot">
+            </div>
+            <div class="field">
+              <label for="evidence_url_title">URL description</label>
+              <input class="input" id="evidence_url_title" placeholder="Archived snapshot of the listing">
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div style="display:grid;gap:1rem;position:sticky;top:76px">
+      <section class="card">
+        <div class="card__head"><h2>Classification</h2></div>
+        <div class="card__body">
+          <div style="display:grid;gap:1rem">
+            <div class="field" data-field="vendor_id" id="vendorField"
+                 {% if not needs_vendor %}hidden{% endif %}>
+              <label for="vendor_id">Vendor<span class="req">*</span></label>
+              <select class="select" id="vendor_id" name="vendor_id">
+                <option value="">Select vendor…</option>
+                {% for v in vendors %}
+                <option value="{{ v.id }}">{{ v.name }}</option>
+                {% endfor %}
+              </select>
+              <small>Which brand owns this case.</small>
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field" data-field="infringement_type">
+              <label for="infringement_type">Infringement Type<span class="req">*</span></label>
+              <select class="select" id="infringement_type" name="infringement_type" required>
+                <option value="">Select…</option>
+                {% for value, label in infringement_types.items() %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+              <div class="field__error" hidden></div>
+            </div>
+            <div class="field" data-field="priority">
+              <label for="priority">Priority</label>
+              <select class="select" id="priority" name="priority">
+                {% for value, label in priorities %}
+                <option value="{{ value }}"{% if value == 'MEDIUM' %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              <small>Priority tightens the SLA window.</small>
+            </div>
+            <div class="field field--full" data-field="description">
+              <label for="description">Case Notes</label>
+              <textarea class="textarea" id="description" name="description"
+                        placeholder="How this listing was found, anything the agents should know…"></textarea>
+            </div>
+            <label class="checkbox">
+              <input type="checkbox" id="run_analysis" checked>
+              Run AI analysis on creation
+            </label>
+          </div>
+        </div>
+        <div class="card__foot">
+          <button class="btn btn--primary btn--block" type="submit" id="submitBtn">
+            Create Case &amp; Run AI Analysis
+          </button>
+          <p class="card__hint" style="margin:.625rem 0 0">
+            The pipeline stops at the human approval gate. Nothing is filed automatically.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__head"><h3>What happens next</h3></div>
+        <div class="card__body">
+          <ul class="timeline">
+            <li class="is-done"><span class="timeline__dot"></span>
+              <div class="timeline__title">Scout</div>
+              <div class="timeline__detail">Captures the listing, seller, pricing and imagery signals.</div></li>
+            <li class="is-done"><span class="timeline__dot"></span>
+              <div class="timeline__title">Verification</div>
+              <div class="timeline__detail">Weighs evidence both ways and scores confidence.</div></li>
+            <li class="is-done"><span class="timeline__dot"></span>
+              <div class="timeline__title">Enforcement Strategist</div>
+              <div class="timeline__detail">Recommends one action, with risks and alternatives.</div></li>
+            <li class="is-current"><span class="timeline__dot"></span>
+              <div class="timeline__title">Human approval</div>
+              <div class="timeline__detail">You decide. Nothing is filed without it.</div></li>
+            <li><span class="timeline__dot"></span>
+              <div class="timeline__title">Filing &amp; Tracking</div>
+              <div class="timeline__detail">Prepares the notice and tracks the response.</div></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/case_new.js"></script>
+{% endblock %}
